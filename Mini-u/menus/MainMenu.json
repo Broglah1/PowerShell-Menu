@@ -52,5 +52,15 @@
         "Appologize_To_Puppies": {
             "Description": "The puppies will forgive you."
         }
+    },
+    "Test Menu": {
+        "Description": "For running tests",
+        "Get Process": {
+            "Description": "Will Get Process for machine",
+            "Command": "Get-Process"
+        },
+        "Appologize_To_Puppies": {
+            "Description": "The puppies will forgive you."
+        }
     }
 }

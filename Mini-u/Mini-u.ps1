@@ -1,8 +1,6 @@
 if (!(Get-Module -Name DrawMenu)) {
     Import-Module $PSScriptRoot\DrawMenu.ps1
 }
-
-function mini_u {
 <#
 .SYNOPSIS
 	This function serves as an example of how I implement command line 
@@ -24,12 +22,25 @@ function mini_u {
 .EXAMPLE
 	PS> mini-u
 #>
+function mini_u {
     $MainMenu = (Get-Content .\menus\MainMenu.json | ConvertFrom-Json).PSObject.Properties
-    $MainMenuSelection = Menu $MainMenu.Name "Main Menu" $MainMenu ; Clear-Host
+    $MainMenuSelection = Menu $MainMenu.Name "Main Menu" $MainMenu
+    Clear-Host
     $SubMenuOptions = $MainMenu | Where-Object{
         $_.Name -eq $MainMenuSelection
     }
     $SubMenu = ($SubMenuOptions.Value | %{$_.PSObject.Properties | ?{$_.Name -ne 'Description'}})
     $MenuOptionSelection = Menu $SubMenu.Name "Select a submenu option" $SubMenu
-    Write-Host $MenuOptionSelection
+
+    # Retrieve the command for the selected submenu option
+    $selectedOptionCommand = ($SubMenu | Where-Object { $_.Name -eq $MenuOptionSelection }).Value.Command
+
+    # Execute the command if it exists
+    if ($selectedOptionCommand) {
+        Write-Host "Executing command: $selectedOptionCommand"
+        $scriptBlock = [scriptblock]::Create($selectedOptionCommand)
+        Invoke-Command -ScriptBlock $scriptBlock
+    } else {
+        Write-Host $MenuOptionSelection
+    }
 }
