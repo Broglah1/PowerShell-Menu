@@ -6,7 +6,7 @@ if (!(Get-Module -Name DrawMenu)) {
     Import-Module $PSScriptRoot\DrawMenu.ps1
 }
 
-function mini-u {
+function mini_u {
 <#
 .SYNOPSIS
 	This function serves as an example of how I implement dynamic
