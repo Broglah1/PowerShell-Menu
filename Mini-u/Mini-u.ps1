@@ -24,12 +24,12 @@ function mini_u {
 .EXAMPLE
 	PS> mini-u
 #>
-    $MainMenu = (Get-Content .\Mini-u\menus\MainMenu.json | ConvertFrom-Json).PSObject.Properties
-    $MainMenuSelection = Menu $MainMenu.Name "Main Menu" $MainMenu; Clear-Host
+    $MainMenu = (Get-Content .\menus\MainMenu.json | ConvertFrom-Json).PSObject.Properties
+    $MainMenuSelection = Menu $MainMenu.Name "Main Menu" $MainMenu ; Clear-Host
     $SubMenuOptions = $MainMenu | Where-Object{
         $_.Name -eq $MainMenuSelection
     }
-    $SubMenu = ($SubMenuOptions.Value | ForEach-Object ($_.PSObject.Properties | where-object {$_.Name -ne 'Description'}))
+    $SubMenu = ($SubMenuOptions.Value | %{$_.PSObject.Properties | ?{$_.Name -ne 'Description'}})
     $MenuOptionSelection = Menu $SubMenu.Name "Select a submenu option" $SubMenu
     Write-Host $MenuOptionSelection
 }
