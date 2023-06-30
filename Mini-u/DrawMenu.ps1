@@ -32,7 +32,9 @@ function Draw-Menu {
     Write-Host ($titlePaddingString)($menuTitle)
     Write-Host $('-' * $consoleWidth -join '')
 
-    for ($i = 0; $i -le $menuLength; $i++) {
+    $curItem = $null #Initialize curItem outside the loop
+
+    for ($i = 0; $i -lt $menuLength; $i++) {
         Write-Host "`t" -NoNewLine
         if ($i -eq $menuPosition) {
             Write-Host "$($menuItems[$i])" -ForegroundColor $backgroundColor -BackgroundColor $foregroundColor
@@ -46,7 +48,15 @@ function Draw-Menu {
     Write-Host ($descriptionPaddingString)($secondaryKey)
     Write-Host $('-' * $consoleWidth -join '')
     Write-Host "`t" -NoNewLine
-    Write-Host ($object | ?{$_.Name -eq $curItem}).Value.Description
+    #Always show the description of the currently highlighted item
+    if ($null -eq $curItem -and $menuItems.Count -gt 0) {
+        $curItem = $menuItems[0]
+    }
+    if ($curItem) {
+        $selectedDescription = ($object | Where-Object { $_.Name -eq $curItem }).Value.Description
+        Write-Host "`t$selectedDescription"
+    }
+    
 }
 
 function Menu {
