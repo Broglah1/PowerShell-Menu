@@ -1,1 +1,0 @@
-![](https://github.com/L-McG/PowerShell/blob/master/SillyScripts/MockThem/Animation.gif)
