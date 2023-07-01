@@ -1,4 +1,4 @@
-function Draw-Menu {
+function Draw_Menu {
     [CmdletBinding()]
     param (
         [Parameter()]
@@ -70,7 +70,7 @@ function Menu {
     $pos = 0
     
     while ($keycode -ne 13) {
-        Draw-Menu $menuItems $pos $menuTitle $object
+        Draw_Menu $menuItems $pos $menuTitle $object
         $press = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown")
         $keycode = $press.virtualkeycode
         if ($keycode -eq 38) {
