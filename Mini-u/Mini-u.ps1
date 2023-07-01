@@ -29,7 +29,7 @@ function mini_u {
     $SubMenuOptions = $MainMenu | Where-Object{
         $_.Name -eq $MainMenuSelection
     }
-    $SubMenu = ($SubMenuOptions.Value | %{$_.PSObject.Properties | ?{$_.Name -ne 'Description'}})
+    $SubMenu = ($SubMenuOptions.Value | ForEach-Object{$_.PSObject.Properties | Where-Object{$_.Name -ne 'Description'}})
     $MenuOptionSelection = Menu $SubMenu.Name "Select a submenu option" $SubMenu
 
     # Retrieve the command for the selected submenu option
