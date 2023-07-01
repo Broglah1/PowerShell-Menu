@@ -32,13 +32,14 @@ function Draw-Menu {
     Write-Host ($titlePaddingString)($menuTitle)
     Write-Host $('-' * $consoleWidth -join '')
 
-    $curItem = $null #Initialize curItem outside the loop
+    $currentDescription = ""
 
     for ($i = 0; $i -lt $menuLength; $i++) {
         Write-Host "`t" -NoNewLine
         if ($i -eq $menuPosition) {
             Write-Host "$($menuItems[$i])" -ForegroundColor $backgroundColor -BackgroundColor $foregroundColor
-            $curItem = $menuItems[$i]
+            $currentItem = $menuItems[$i]
+            $currentDescription = ($object | Where-Object { $_.Name -eq $currentItem }).Value.Description
         } else {
             Write-Host "$($menuItems[$i])" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
         }
@@ -47,25 +48,9 @@ function Draw-Menu {
     Write-Host $('-' * $consoleWidth -join '')
     Write-Host ($descriptionPaddingString)($secondaryKey)
     Write-Host $('-' * $consoleWidth -join '')
-    Write-Host "`t" -NoNewLine
 
-    # For Debugging
-    Write-Host "Debug: curItem before checking: $curItem"
-    Write-Host "Debug: menuItems.Count: $($menuItems.Count)"
-
-#Always show the description of the currently highlighted item
-# If curItem is null, default to the first item for the description
-if ($null -eq $curItem -and $menuItems.Count -gt 0) {
-    $curItem = $menuItems[0]
-}
-    # For Debugging
-    Write-Host "Debug: curItem after checking: $curItem"
-    
-# Now if curItem is set, display the description
-if ($curItem) {
-    $selectedDescription = ($object | Where-Object { $_.Name -eq $curItem }).Value.Description
-    Write-Host "`t$selectedDescription"
-}
+    # Display the description after the menu is rendered.
+    Write-Host "`t$currentDescription"
 }
 
 function Menu {
@@ -83,7 +68,7 @@ function Menu {
     )
     $keycode = 0
     $pos = 0
-    Draw-Menu $menuItems $pos $menuTitle #initial draw
+    Draw-Menu $menuItems $pos $menuTitle $object #initial draw
     # Added: Display description of the first item
     $firstDescription = ($object | Where-Object { $_.Name -eq $menuItems[0] }).Value.Description
     Write-Host "`t$firstDescription"
