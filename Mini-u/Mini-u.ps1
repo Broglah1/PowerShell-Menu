@@ -32,10 +32,10 @@ function mini_u {
     $SubMenu = ($SubMenuOptions.Value | ForEach-Object{$_.PSObject.Properties | Where-Object{$_.Name -ne 'Description'}})
     $MenuOptionSelection = Menu $SubMenu.Name "Select a submenu option" $SubMenu
 
-    # Retrieve the command for the selected submenu option
+    #Retrieve the command for the selected submenu option
     $selectedOptionCommand = ($SubMenu | Where-Object { $_.Name -eq $MenuOptionSelection }).Value.Command
 
-    # Execute the command if it exists
+    #Execute the command if it exists
     if ($selectedOptionCommand) {
         Write-Host "Executing command: $selectedOptionCommand"
         $scriptBlock = [scriptblock]::Create($selectedOptionCommand)
