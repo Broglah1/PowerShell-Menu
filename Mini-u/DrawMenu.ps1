@@ -68,15 +68,11 @@ function Menu {
     )
     $keycode = 0
     $pos = 0
-    Draw-Menu $menuItems $pos $menuTitle $object #initial draw
-    # Added: Display description of the first item
-    $firstDescription = ($object | Where-Object { $_.Name -eq $menuItems[0] }).Value.Description
-    Write-Host "`t$firstDescription"
-
+    
     while ($keycode -ne 13) {
+        Draw-Menu $menuItems $pos $menuTitle $object
         $press = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown")
         $keycode = $press.virtualkeycode
-        Write-host "$($press.character)" -NoNewLine
         if ($keycode -eq 38) {
             $pos--
         }
@@ -89,7 +85,6 @@ function Menu {
         if ($pos -ge $menuItems.length) {
             $pos = 0
         }
-        Draw-Menu $menuItems $pos $menuTitle $object
     }
     return $($menuItems[$pos])
 }
