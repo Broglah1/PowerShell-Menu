@@ -29,16 +29,16 @@ function mini_u {
     $script:ProgressPreference = 'SilentlyContinue'
 
     do {
-        Clear-Host # Clear the screen before drawing the main menu
+        Clear-Host #Clear the screen before drawing the main menu
         $MainMenu = (Get-Content .\menus\MainMenu.json | ConvertFrom-Json).PSObject.Properties
         $MainMenuSelection = Menu $MainMenu.Name "Main Menu" $MainMenu
         
         if ($MainMenuSelection -eq "Exit") { break }
         
-        $SubMenuOptions = $MainMenu | Where-Object{
+        $SubMenuOptions = $MainMenu | Where-Object {
             $_.Name -eq $MainMenuSelection
         }
-        $SubMenu = ($SubMenuOptions.Value | ForEach-Object{$_.PSObject.Properties | Where-Object{$_.Name -ne 'Description'}})
+        $SubMenu = ($SubMenuOptions.Value | ForEach-Object {$_.PSObject.Properties | Where-Object {$_.Name -ne 'Description'}})
         $MenuOptionSelection = Menu ($SubMenu.Name + "Back to Main Menu") "Select a sub menu option" $SubMenu
         
         #Retrieve the command for the selected submenu option
@@ -49,7 +49,7 @@ function mini_u {
         if ($selectedOptionCommand) {
             Write-Host "Executing command: $selectedOptionCommand"
             $scriptBlock = [scriptblock]::Create($selectedOptionCommand)
-            Invoke-Command -ScriptBlock $scriptBlock
+            Invoke-Command -ScriptBlock $scriptBlock | Out-Host
             
             #Add a pause here
             Read-Host "Press Enter to return to main menu"
