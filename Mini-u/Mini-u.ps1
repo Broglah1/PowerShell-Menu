@@ -23,29 +23,42 @@ if (!(Get-Module -Name DrawMenu)) {
 	PS> mini-u
 #>
 function mini_u {
-    do{
-    $MainMenu = (Get-Content .\menus\MainMenu.json | ConvertFrom-Json).PSObject.Properties
-    $MainMenuSelection = Menu $MainMenu.Name "Main Menu" $MainMenu
-    #Clear-Host
-    if ($MainMenuSelection -eq "Exit") { break }
+    #Save the old ProgressPreference
+    $oldProgressPreference = $ProgressPreference
+    #Set the ProgressPreference to SilentlyContinue to suppress the progress bar
+    $script:ProgressPreference = 'SilentlyContinue'
 
-    $SubMenuOptions = $MainMenu | Where-Object{
-        $_.Name -eq $MainMenuSelection
-    }
-    $SubMenu = ($SubMenuOptions.Value | ForEach-Object{$_.PSObject.Properties | Where-Object{$_.Name -ne 'Description'}})
-    $MenuOptionSelection = Menu ($SubMenu.Name + "Back to Main Menu") "Select a sub menu option" $SubMenu
+    do {
+        Clear-Host # Clear the screen before drawing the main menu
+        $MainMenu = (Get-Content .\menus\MainMenu.json | ConvertFrom-Json).PSObject.Properties
+        $MainMenuSelection = Menu $MainMenu.Name "Main Menu" $MainMenu
+        
+        if ($MainMenuSelection -eq "Exit") { break }
+        
+        $SubMenuOptions = $MainMenu | Where-Object{
+            $_.Name -eq $MainMenuSelection
+        }
+        $SubMenu = ($SubMenuOptions.Value | ForEach-Object{$_.PSObject.Properties | Where-Object{$_.Name -ne 'Description'}})
+        $MenuOptionSelection = Menu ($SubMenu.Name + "Back to Main Menu") "Select a sub menu option" $SubMenu
+        
+        #Retrieve the command for the selected submenu option
+        $selectedOptionCommand = ($SubMenu | Where-Object { $_.Name -eq $MenuOptionSelection }).Value.Command
+        
+        #Execute the command if it exists
+        if ($MenuOptionSelection -eq "Back to Main Menu") { continue }
+        if ($selectedOptionCommand) {
+            Write-Host "Executing command: $selectedOptionCommand"
+            $scriptBlock = [scriptblock]::Create($selectedOptionCommand)
+            Invoke-Command -ScriptBlock $scriptBlock
+            
+            #Add a pause here
+            Read-Host "Press Enter to return to main menu"
+            Clear-Host #Clear the screen again before returning to the main menu
+        } else {
+            Write-Host $MenuOptionSelection
+        }
+    } while ($true)
 
-    #Retrieve the command for the selected submenu option
-    $selectedOptionCommand = ($SubMenu | Where-Object { $_.Name -eq $MenuOptionSelection }).Value.Command
-
-    #Execute the command if it exists
-    if ($MenuOptionSelection -eq "Back to Main Menu") { continue }
-    if ($selectedOptionCommand) {
-        Write-Host "Executing command: $selectedOptionCommand"
-        $scriptBlock = [scriptblock]::Create($selectedOptionCommand)
-        Invoke-Command -ScriptBlock $scriptBlock
-    } else {
-        Write-Host $MenuOptionSelection
-    }
-} while ($true)
+    #Reset the ProgressPreference back to its original state
+    $script:ProgressPreference = $oldProgressPreference
 }
