@@ -48,8 +48,7 @@ function Draw_Menu {
     Write-Host $('-' * $consoleWidth -join '')
     Write-Host ($descriptionPaddingString)($secondaryKey)
     Write-Host $('-' * $consoleWidth -join '')
-
-    # Display the description after the menu is rendered.
+    #Display the description after the menu is rendered.
     Write-Host "`t$currentDescription"
 }
 
