@@ -1,1 +1,1 @@
-![](https://github.com/L-McG/PowerShell/blob/new-menu-style/Mini-u/Animation.gif)
+![](https://github.com/Broglah1/PowerShell-Menu/blob/master/Mini-u/Animation.gif)
