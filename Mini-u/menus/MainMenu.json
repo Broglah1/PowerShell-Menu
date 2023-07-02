@@ -53,14 +53,15 @@
             "Description": "The puppies will forgive you."
         }
     },
-    "Test Menu": {
-        "Description": "For running tests",
+    "Test Running Code": {
+        "Description": "For running additonal code tests using powershell script block from json",
         "Get Process": {
             "Description": "Will Get Process for machine",
             "Command": "Get-Process"
         },
-        "Appologize_To_Puppies": {
-            "Description": "The puppies will forgive you."
+        "Ping google.com": {
+            "Description": "Will ping google",
+            "Command": "tnc google.com"
         }
     }
 }
