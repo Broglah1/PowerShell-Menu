@@ -23,19 +23,23 @@ if (!(Get-Module -Name DrawMenu)) {
 	PS> mini-u
 #>
 function mini_u {
+    do{
     $MainMenu = (Get-Content .\menus\MainMenu.json | ConvertFrom-Json).PSObject.Properties
     $MainMenuSelection = Menu $MainMenu.Name "Main Menu" $MainMenu
-    Clear-Host
+    #Clear-Host
+    if ($MainMenuSelection -eq "Exit") { break }
+
     $SubMenuOptions = $MainMenu | Where-Object{
         $_.Name -eq $MainMenuSelection
     }
     $SubMenu = ($SubMenuOptions.Value | ForEach-Object{$_.PSObject.Properties | Where-Object{$_.Name -ne 'Description'}})
-    $MenuOptionSelection = Menu $SubMenu.Name "Select a submenu option" $SubMenu
+    $MenuOptionSelection = Menu ($SubMenu.Name + "Back to Main Menu") "Select a sub menu option" $SubMenu
 
     #Retrieve the command for the selected submenu option
     $selectedOptionCommand = ($SubMenu | Where-Object { $_.Name -eq $MenuOptionSelection }).Value.Command
 
     #Execute the command if it exists
+    if ($MenuOptionSelection -eq "Back to Main Menu") { continue }
     if ($selectedOptionCommand) {
         Write-Host "Executing command: $selectedOptionCommand"
         $scriptBlock = [scriptblock]::Create($selectedOptionCommand)
@@ -43,4 +47,5 @@ function mini_u {
     } else {
         Write-Host $MenuOptionSelection
     }
+} while ($true)
 }

@@ -1,4 +1,7 @@
 {
+        "Exit": {
+            "Description": "Exit the script."
+        },
     "Administrative_Tasks": {
         "Description": "A collection of tasks performed by site adminstrators.",
         "Backup_Users": {
@@ -62,6 +65,10 @@
         "Ping google.com": {
             "Description": "Will ping google",
             "Command": "tnc google.com"
+        },
+        "Running seperate Powershell script": {
+            "Description": "Will execute battlebit server list viewer",
+            "Command": "C:\\Devops\\Battlebit\\ServerList.ps1"
         }
     }
 }
