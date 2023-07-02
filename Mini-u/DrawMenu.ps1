@@ -72,10 +72,10 @@ function Menu {
         Draw_Menu $menuItems $pos $menuTitle $object
         $press = $host.ui.rawui.readkey("NoEcho,IncludeKeyDown")
         $keycode = $press.virtualkeycode
-        if ($keycode -eq 38) {
+        if ($keycode -eq 38) { #up arrow
             $pos--
         }
-        if ($keycode -eq 40) {
+        if ($keycode -eq 40) { #down arrow
             $pos++
         }
         if ($pos -lt 0) {

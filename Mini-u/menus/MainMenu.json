@@ -1,7 +1,10 @@
 {
-        "Exit": {
-            "Description": "Exit the script."
-        },
+    "Maximize Window": {
+        "Description": "Maximizes the PowerShell window."
+    },
+    "Exit": {
+        "Description": "Exit the script."
+    },
     "Administrative_Tasks": {
         "Description": "A collection of tasks performed by site adminstrators.",
         "Backup_Users": {
