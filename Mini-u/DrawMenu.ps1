@@ -17,7 +17,7 @@ function Draw_Menu {
         [String]
         $secondaryKey = 'Description'
     )
-
+    [Console]::Title = "Powershell Demo Menu"
     $menuLength = $menuItems.length
     $consoleWidth = $host.ui.RawUI.WindowSize.Width
     $foregroundColor = $host.UI.RawUI.ForegroundColor
